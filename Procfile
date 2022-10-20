@@ -1,0 +1,1 @@
+web: gunicorn atg_assignment.wsgi --log-file -

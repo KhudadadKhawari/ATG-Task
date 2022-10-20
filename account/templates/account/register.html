@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="content text-center">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <h2>User Registration</h2>
         {{user_form.as_p}}
