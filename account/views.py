@@ -41,6 +41,9 @@ class Register(View):
             user.save()
             messages.success(request, "User created successfully", "alert-success")
             return redirect('home')
+        else:
+            self.context['user_form'] = user_form
+            self.context['address_form'] = address_form
         return render(request, self.template_name, self.context)
 
 
