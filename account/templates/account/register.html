@@ -1,0 +1,16 @@
+{% extends 'account/layout.html' %}
+
+{% block content %}
+<div class="content text-center">
+    <form method="post">
+        {% csrf_token %}
+        <h2>User Registration</h2>
+        {{user_form.as_p}}
+        <b>Address: </b><br>
+        {{address_form.as_p}}
+
+        <input type="submit" class="btn btn-primary" value="Register">
+        <input type="reset" class="btn btn-secondary" value="Reset">
+    </form>
+</div>
+{% endblock content %}
