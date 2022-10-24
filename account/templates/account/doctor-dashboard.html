@@ -3,5 +3,15 @@
 {% block content %}
 <div class="content mt-4">
     <h1>This is Doctor's Dashboard</h1>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {% if dash_nav_active %} {% if 'my_blogs' in dash_nav_active %} active {% endif %}{% endif %}" href="{% url 'my_blogs' %}">My Blogs</a>
+        </li>
+    </ul>
+    
+    {% if dash_nav_active %} {% if 'my_blogs' in dash_nav_active %}
+        {% include 'blog/my_blogs.html' %}
+    {% endif %} {% endif %}
+
 </div>
 {% endblock content %}

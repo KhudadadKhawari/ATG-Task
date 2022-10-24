@@ -18,6 +18,9 @@
                     <li class="nav-item">
                         <a class="nav-link {% if active_nav %} {% if active_nav == 'dashboard' %} active {% endif %} {% endif %}" href="{% if 'Doctor' in request.user.user_type %}{% url 'doctor-dashboard' %} {% elif 'Patient' in request.user.user_type %} {% url 'patient-dashboard' %}{% else %} / {% endif %}">Dashboard</a>
                     </li>
+                    <li class-="nav-item">
+                        <a class="nav-link {% if active_nav %} {% if active_nav == 'blog' %} active {% endif %} {% endif %}" href="{% url 'blog_list' %}">Blog</a>
+                    </li>
                     <li class="nav-item"> 
                         <a href="{% url 'user_logout' %}" class="nav-link">Logout</a>
                     </li>

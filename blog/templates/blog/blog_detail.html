@@ -1,0 +1,23 @@
+{% extends "account/layout.html" %}
+
+{% block content %}
+<div class="content mb-5">
+    </script>
+    <div class="container">
+        <img src="{{blog.image.url}}" class="img-thumbnail" width="400px" alt="...">
+        <h3 class="text-center bg-dark text-white m-3">{{blog.title}}</h3>
+        <h3>Category: {{blog.category}}</h3>
+        <hr>
+        <h6>Author: {{ blog.author.first_name }} {{ blog.author.last_name }}</h6>
+        <hr>
+        <h4 class="text-left">Summary:</h4>
+        <p class="text-left">{{blog.summary}}</p>
+        <hr>
+        <h4 class="text-left">Content:</h4>
+        <p class="text-left">{{blog.content}}</p>
+    </div>
+    <button onclick="history.back();" class="btn btn-secondary btn-sm">Go Back</button>
+</div>
+
+
+{% endblock content %}
