@@ -8,61 +8,7 @@ from django.contrib import messages
 from .forms import BlogForm
 
 
-method_decorator(login_required, name='dispatch')
-class MyBlogs(View):
-    template_name = 'account/doctor-dashboard.html'
-    context = {
-        'title': 'My Blogs',
-        'active_nav': 'dashboard',
-        'dash_nav_active': 'my_blogs',
-        'categories': CATEGORIES,
-        'form': BlogForm(),
-    }
-
-    def get(self, request):
-        self.context['blogs'] = Blog.objects.filter(author=request.user)
-        return render(request, self.template_name, self.context)
-    
-    def post(self, request):
-        form = BlogForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.instance.author = request.user
-            form.save()
-            messages.success(request, 'Blog published successfully')
-            return redirect('my_blogs')
-        else:
-            self.context['form'] = form
-            messages.error(request, 'Blog not Saved')
-            return render(request, self.template_name, self.context)
-
-
-
-@login_required
-def update_blog(request, pk):
-    blog = Blog.objects.get(pk=pk)
-    form = BlogForm(request.POST or None, request.FILES or None, instance=blog)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'Blog updated successfully')
-        return redirect('my_blogs')
-    else:
-        messages.error(request, 'Blog not updated')
-        return redirect('my_blogs')
-
-
-@login_required
-def publish_blog(request, pk):
-    blog = Blog.objects.get(pk=pk)
-    if blog.author == request.user:
-        blog.is_draft = False
-        blog.save()
-        messages.success(request, 'Blog published successfully')
-        return redirect('my_blogs')
-    else:
-        messages.error(request, 'You are not authorized to publish this blog')
-        return redirect('home')
-        
-
+# General Blog Views
 method_decorator(login_required, name='dispatch')
 class BlogListView(View):
     context = {
@@ -87,8 +33,7 @@ class BlogListView(View):
 
         return render(request, 'blog/blog_list.html', self.context)
 
-
-
+# Single Blog detaailed view
 method_decorator(login_required, name='dispatch')
 class BlogDetailView(View):
     model = Blog
@@ -108,6 +53,63 @@ class BlogDetailView(View):
         return render(request, self.template_name, self.context)
 
 
+# Doctor's View
+method_decorator(login_required, name='dispatch')
+class MyBlogs(View):
+    template_name = 'account/doctor-dashboard.html'
+    context = {
+        'title': 'My Blogs',
+        'active_nav': 'dashboard',
+        'dash_nav_active': 'my_blogs',
+        'categories': CATEGORIES,
+        'form': BlogForm(),
+    }
+
+    # show all blogs by logged_in user
+    def get(self, request):
+        self.context['blogs'] = Blog.objects.filter(author=request.user)
+        return render(request, self.template_name, self.context)
+    
+    # create new blog post
+    def post(self, request):
+        form = BlogForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.instance.author = request.user
+            form.save()
+            messages.success(request, 'Blog published successfully')
+            return redirect('my_blogs')
+        else:
+            self.context['form'] = form
+            messages.error(request, 'Blog not Saved')
+            return render(request, self.template_name, self.context)
+
+# update blog post
+@login_required
+def update_blog(request, pk):
+    blog = Blog.objects.get(pk=pk)
+    form = BlogForm(request.POST or None, request.FILES or None, instance=blog)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Blog updated successfully')
+        return redirect('my_blogs')
+    else:
+        messages.error(request, 'Blog not updated')
+        return redirect('my_blogs')
+
+# Publish drafted blog
+@login_required
+def publish_blog(request, pk):
+    blog = Blog.objects.get(pk=pk)
+    if blog.author == request.user:
+        blog.is_draft = False
+        blog.save()
+        messages.success(request, 'Blog published successfully')
+        return redirect('my_blogs')
+    else:
+        messages.error(request, 'You are not authorized to publish this blog')
+        return redirect('home')
+
+# Delete blog
 @login_required
 def blog_delete(request, pk):
     blog = Blog.objects.get(pk=pk)
