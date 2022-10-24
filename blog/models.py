@@ -3,19 +3,18 @@ from django.db import models
 from account.models import User
 
 
-# blog with 4 categories mental health, Heart Disease, Covid19, Immunization
+CATEGORIES = ('Mental Health', 'Heart Disease', 'Covid19', 'Immunization')
 
-CATEGORIES = (
-    ('Mental Health', 'Mental Health'),
-    ('Heart Disease', 'Heart Disease'),
-    ('Covid19', 'Covid19'),
-    ('Immunization', 'Immunization'),
+CATEGORY_CHOICES = (
+    ('Mental Health', CATEGORIES[0]),
+    ('Heart Disease', CATEGORIES[1]),
+    ('Covid19', CATEGORIES[2]),
+    ('Immunization', CATEGORIES[3]),
 )
-
 
 class Blog(models.Model):
     title = models.CharField(max_length=200)
-    category = models.CharField(max_length=100, choices=CATEGORIES)
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
     summary = models.TextField()
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)

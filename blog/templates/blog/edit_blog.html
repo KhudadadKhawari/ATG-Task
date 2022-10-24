@@ -1,0 +1,47 @@
+{% load static %}
+
+<!-- Edit Blog -->
+<!-- Blog Category -->
+<div class="form-group">
+    <label class="text-start bg-dark text-white" for="category">Category</label>
+    <select name="category" id="category" class="form-control">
+        {% for category in categories %}
+            <!-- selected option -->
+            {% if category == blog.category %}
+                <option value="{{category}}" selected>{{category}}</option>
+            {% else %}
+                <option value="{{category}}">{{category}}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+</div>
+
+<!-- Blog Title -->
+<div class="form-group">
+    <label class="text-start bg-dark text-white" for="title">Title</label>
+    <input type="text" name="title" id="title" class="form-control" value="{{blog.title}}">
+</div>
+
+<!-- Blog Summary -->
+<div class="form-group">
+    <label class="text-start bg-dark text-white" for="summary">Summary</label>
+    <textarea name="summary" id="summary" cols="30" rows="5" class="form-control">{{blog.summary}}</textarea>
+</div>
+
+<!-- Blog Content -->
+<div class="form-group">
+    <label class="text-start bg-dark text-white" for="content">Content</label>
+    <textarea name="content" id="content" cols="30" rows="10" class="form-control">{{blog.content}}</textarea>
+</div>
+
+<!-- blog draft or publish -->
+<div class="form-group">
+    <label class="text-start bg-dark text-white" for="is_draft">is_draft</label>
+    <input type="checkbox" name="is_draft" id="is_draft" {% if blog.draft %}checked{% endif %}>
+</div>
+
+<!-- Blog Image -->
+<div class="form-group">
+    <label class="text-start bg-dark text-white" for="image">Image</label>
+    <input type="file" name="image" id="image" class="form-control">
+</div>

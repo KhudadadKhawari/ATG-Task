@@ -4,7 +4,9 @@
 <div class="content mb-5">
     </script>
     <div class="container">
+        <img src="{{blog.image.url}}" class="img-thumbnail" width="400px" alt="...">
         <h3 class="text-center bg-dark text-white m-3">{{blog.title}}</h3>
+        <h3>Category: {{blog.category}}</h3>
         <hr>
         <h6>Author: {{ blog.author.first_name }} {{ blog.author.last_name }}</h6>
         <hr>

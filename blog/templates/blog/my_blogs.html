@@ -1,7 +1,131 @@
-{% extends "account/layout.html" %}
+{% load static %}
 
-{% block content %}
+<div class="content">
+    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newBlogPostModal">New Blog</button>
+    <!-- new blog post modal -->
+    <div class="modal fade" id="newBlogPostModal" tabindex="-1" aria-labelledby="newBlogPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Blog Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    {{form.as_p}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Post">
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        {% for blog in blogs %}
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{{blog.image.url}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{blog.title}}</h5>
+                    <p class="card-text" id="blog-summary">{{blog.summary}}</p>
+                    <!-- delete and update buttons -->
+                    {% if blog.is_draft %}
+                        <span class="text-danger">Draft 
+                            <button type="button" class="btn text-success" data-bs-toggle="modal" data-bs-target="#publishNowModal{{blog.id}}">Publish Now</button>
+                        </span>
+                        <!-- publishNowModal -->
+                        <div class="modal fade" id="publishNowModal{{blog.id}}" tabindex="-1" aria-labelledby="publishNowModal{{blog.id}}Label" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Blog</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are You Sure You want to Publish "{{blog.title}}" Blog Post? </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="{% url 'publish_blog' blog.id %}" class="btn btn-success">Publish</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        
+                    {% else %}
+                        <span class="text-success pe-3">Published</span>
+                    {% endif %}
+                    <a href="{% url 'blog_detail' blog.id %}" class="btn btn-sm btn-primary">View</a>
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{blog.id}}">Edit</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{blog.id}}">Delete</button>
 
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editModal{{blog.id}}" tabindex="-1" aria-labelledby="editModal{{blog.id}}Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Blog</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{% url 'update_blog' blog.id %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <!-- Include Edit HTML which includes required Fields-->
+                                    {% include 'blog/edit_blog.html' %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-primary" value="Update">
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
 
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteModal{{blog.id}}" tabindex="-1" aria-labelledby="deleteModal{{blog.id}}Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Delete Blog</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are You Sure You want to Delete "{{blog.title}}" Blog Post? </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="{% url 'blog_delete' blog.id %}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
-{% endblock content %}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var summary = document.querySelectorAll("#blog-summary");
+        summary.forEach(function(item){
+            var text = item.innerText;
+            if(text.length > 15){
+                item.innerText = text.slice(0, 100) + "...";
+            }
+        })
+        // if .row content doesn't have any col hide it
+        var row = document.querySelectorAll(".row");
+        row.forEach(function(item){
+            if(item.children.length == 1){
+                item.style.display = "none";
+            }
+        })
+    });
+</script>
