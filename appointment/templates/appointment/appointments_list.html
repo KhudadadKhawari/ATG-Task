@@ -1,0 +1,39 @@
+ <!-- Current Appointments -->
+ <div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Your Appointments</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Start Time</th>
+                        <th scope="col">End Time</th>
+                        {% if 'Doctor' in request.user.user_type %}
+                            <th scope="col">Patient</th>
+                        {% else %}
+                            <th scope="col">Doctor</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                        <tr>
+                            <!-- forloop counter -->
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ appointment.date }}</td>
+                            <td>{{ appointment.start_time }}</td>
+                            <td>{{ appointment.end_time }}</td>
+                            {% if 'Doctor' in request.user.user_type %}
+                                <td>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</td>
+                            {% else %}
+                                <td>{{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

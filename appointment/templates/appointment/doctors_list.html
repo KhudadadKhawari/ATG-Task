@@ -1,0 +1,36 @@
+ <!-- available doctors list -->
+ <div class="container">
+    <h3>Available Dcotors</h3>
+    <div class="row">
+        {% for doctor in doctors %}
+            <div class="col col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ doctor.profile_picture.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{doctor.first_name}} {{ doctor.last_name }}</h5>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newAppointment{{doctor.id}}">Book Appointment</button>
+                        <!-- new appointment modal -->
+                        <div class="modal fade" id="newAppointment{{doctor.id}}" tabindex="-1" aria-labelledby="newAppointment{{doctor.id}}Label" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content mb-3">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Book an Appointment</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <!-- create an appointment form -->
+                                    <form method="post" class="p-5 mt-3">
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <input type="text" name="doctor_id" id="doctor_id" value="{{doctor.id}}" hidden />
+                                        <input type="submit" class="btn btn-primary mb-3" value="Create Appointment" />
+                                        <input type="reset" class="btn btn-secondary mb-3" value="Reset" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+ </div>

@@ -1,0 +1,15 @@
+{% extends "account/layout.html" %}
+
+{% block content %}
+<div class="content">
+    <h1 class="text-center">Appointments</h1>
+    <hr>
+    {% if request.user.user_type == 'Patient' %}
+        {% include 'appointment/appointments_list.html' %}
+        {% include 'appointment/doctors_list.html' %}
+    {% endif %}
+    {% if request.user.user_type == 'Doctor' %}
+        {% include 'appointment/appointments_list.html' %}
+    {% endif %}
+</div>
+{% endblock content %}
