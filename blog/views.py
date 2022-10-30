@@ -9,7 +9,7 @@ from .forms import BlogForm
 
 
 # General Blog Views
-method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class BlogListView(View):
     context = {
         'title': 'Blog',
@@ -34,7 +34,7 @@ class BlogListView(View):
         return render(request, 'blog/blog_list.html', self.context)
 
 # Single Blog detaailed view
-method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class BlogDetailView(View):
     model = Blog
     template_name = 'blog/blog_detail.html'
@@ -54,7 +54,7 @@ class BlogDetailView(View):
 
 
 # Doctor's View
-method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class MyBlogs(View):
     template_name = 'account/doctor-dashboard.html'
     context = {
